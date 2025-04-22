@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="imagens/WhatsApp-Image-2024-11-26-at-16.45.11.ico" type="image/x-icon">
+    <link rel="stylesheet" href="index.css">
+    <title>Green City</title>
+
+    <script>
+        async function validateForm(event) {
+            event.preventDefault(); // Evita o envio automático do formulário
+        
+            const email = document.querySelector('input[type="email"]').value.trim();
+            const password = document.querySelector('input[type="password"]').value;
+        
+            // Valida se o email contém "@"
+            if (!email.includes("@")) {
+                alert("Por favor, insira um email válido com '@'.");
+                return;
+            }
+        
+            // Valida se a senha é "1234"
+            if (password !== "1234") {
+                alert("Senha Incorreta");
+                return;
+            }
+        
+            try {
+                // Faz a requisição para a API para obter a lista de usuários
+                const response = await fetch('SUA API');
+                if (!response.ok) {
+                    throw new Error("Erro ao acessar a API.");
+                }
+                const users = await response.json();
+        
+                // Verifica se o email está na lista de usuários
+                const user = users.find(user => user.email === email);
+        
+                if (user) {
+                    // Verifica qual email foi inserido e redireciona para a página correspondente
+                    if (email === "victor.antunes@example.com") {
+                        // Redireciona para a página de admin
+                        window.location.href = "telainicial_admin.html";
+                        return; // Para garantir que nada mais seja executado
+                    } else if (email === "maria.clara@example.com") {
+                        // Redireciona para a página de usuário comum
+                        window.location.href = "telainicial_usuario.html";
+                        return;
+                    } else {
+                        alert("Email não autorizado. Tente novamente.");
+                        return;
+                    }
+                } else {
+                    alert("Email não encontrado. Tente novamente.");
+                }
+            } catch (error) {
+                alert("Erro ao acessar a API. Tente novamente mais tarde.");
+                console.error(error);
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <main class="container" id="container">
+        <section class="form-container sign-in">
+            <form onsubmit="validateForm(event)">
+                <h1>Entrar</h1>                    
+                <span>Use sua senha e email</span>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Senha" required>
+                <button type="submit">Entrar</button>
+                <br>
+                <span class="percasenha">Em caso de perda de senha, contate o seu supervisor</span>
+            </form>
+        </section>
+        <aside class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-right">
+                    <h1>Green City</h1>
+                </div>
+            </div>
+        </aside>
+        <!-- Imagem do usuário -->
+        <img id="user-image" src="" alt="Imagem do Usuário" style="display:none;"> <!-- Oculta a imagem por padrão -->
+    </main>
+</body>
+</html>
